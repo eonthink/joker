@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-@FragmentDestination(pageUrl = "main/tabs/find")
+@FragmentDestination(pageUrl = "main/tabs/dash")
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;

@@ -2,6 +2,7 @@ package com.demo.joker;
 
 import android.os.Bundle;
 
+import com.demo.joker.utils.NavGraphBuilder;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        NavGraphBuilder.build(navController);
     }
 
 }
