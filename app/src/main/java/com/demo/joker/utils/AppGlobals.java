@@ -3,15 +3,15 @@ package com.demo.joker.utils;
 import android.app.Application;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class AppGlobals {
     private static Application sApplication;
     public static Application getsApplication(){
         if(sApplication ==null){
             try {
-                Method method= Class.forName("android.app.activityThread").getDeclaredMethod("currentApplication");
-               sApplication= (Application) method.invoke(null,null);
+                sApplication = (Application) Class.forName("android.app.ActivityThread")
+                        .getMethod("currentApplication")
+                        .invoke(null, (Object[]) null);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
