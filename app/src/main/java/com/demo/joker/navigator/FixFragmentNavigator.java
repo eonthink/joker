@@ -80,6 +80,7 @@ public class FixFragmentNavigator extends FragmentNavigator  {
 
         ft.setPrimaryNavigationFragment(frag);
 
+
         final @IdRes int destId = destination.getId();
         ArrayDeque<Integer> mBackStack=null;
         try {
