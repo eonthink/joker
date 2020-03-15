@@ -1,6 +1,7 @@
 package com.demo.joker.ui.my;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ public class MyFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_my, container, false);
-
+        Log.e("MyFragment"," onCreateView");
         return root;
     }
 }
