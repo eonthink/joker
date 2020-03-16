@@ -4,6 +4,7 @@ import android.content.ComponentName;
 
 import com.demo.joker.model.Destination;
 import com.demo.joker.navigator.FixFragmentNavigator;
+import com.demo.libcommon.utils.AppGlobals;
 
 import java.util.HashMap;
 
@@ -42,7 +43,7 @@ public class NavGraphBuilder {
                 ActivityNavigator.Destination destination = activityNavigator.createDestination();
                 destination.setId(value.getId());
                 destination.addDeepLink(value.getPageUrl());
-                destination.setComponentName(new ComponentName(AppGlobals.getsApplication().getPackageName(),value.getClassName()));
+                destination.setComponentName(new ComponentName(AppGlobals.getApplication().getPackageName(),value.getClassName()));
                 navGraph.addDestination(destination);
             }
 

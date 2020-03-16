@@ -39,7 +39,8 @@ dependencies {
     implementation project(':libnavannotation')
     //如果你使用kotlin,这里需要使用 kapt project
     annotationProcessor project(":libnavcompiler")
-
-    //fastjson解析
     implementation 'com.alibaba:fastjson:1.2.59'
+
+    implementation project(':libnetwork')
+    implementation project(':libcommon')
 }

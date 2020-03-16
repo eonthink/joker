@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.demo.joker.model.BottomBar;
 import com.demo.joker.model.Destination;
+import com.demo.libcommon.utils.AppGlobals;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class AppConfig {
     }
 
     private static String parseFile(String fileName){
-        AssetManager assets = AppGlobals.getsApplication().getResources().getAssets();
+        AssetManager assets = AppGlobals.getApplication().getResources().getAssets();
         InputStream stream = null;
         BufferedReader reader = null;
         StringBuilder builder=new StringBuilder();

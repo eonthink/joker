@@ -1,4 +1,4 @@
-package com.demo.joker.utils;
+package com.demo.libcommon.utils;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class AppGlobals {
     private static Application sApplication;
-    public static Application getsApplication(){
+    public static Application getApplication(){
         if(sApplication ==null){
             try {
                 sApplication = (Application) Class.forName("android.app.ActivityThread")
