@@ -18,52 +18,49 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class ApiService {
-    public static final OkHttpClient okhttpClient ;
-    private static String sBaseUrl;
-    public static Convert sConvert;
+    protected static final OkHttpClient okHttpClient;
+    protected static String sBaseUrl;
+    protected static Convert sConvert;
 
     static {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-         okhttpClient = new OkHttpClient.Builder()
+        okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build();
 
-        TrustManager[] trustManagers = new TrustManager[]{
-               new X509TrustManager() {
-                   @Override
-                   public void checkClientTrusted(X509Certificate[] certificates, String s) throws CertificateException {
+        //http 证书问题
+        TrustManager[] trustManagers = new TrustManager[]{new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 
-                   }
+            }
 
-                   @Override
-                   public void checkServerTrusted(X509Certificate[] certificates, String s) throws CertificateException {
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 
-                   }
+            }
 
-                   @Override
-                   public X509Certificate[] getAcceptedIssuers() {
-                       return new X509Certificate[0];
-                   }
-               }
-        };
-
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        }};
         try {
             SSLContext ssl = SSLContext.getInstance("SSL");
-            ssl.init(null,
-                    trustManagers,new SecureRandom());
+            ssl.init(null, trustManagers, new SecureRandom());
+
             HttpsURLConnection.setDefaultSSLSocketFactory(ssl.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
                 @Override
-                public boolean verify(String s, SSLSession session) {
+                public boolean verify(String hostname, SSLSession session) {
                     return true;
                 }
             });
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (KeyManagementException e) {
@@ -71,12 +68,19 @@ public class ApiService {
         }
     }
 
-
-    public static void init(String baseUrl,Convert convert){
-        sBaseUrl =baseUrl;
-        if(convert == null){
-            convert =new JsonConvert();
+    public static void init(String baseUrl, Convert convert) {
+        sBaseUrl = baseUrl;
+        if (convert == null) {
+            convert = new JsonConvert();
         }
-        sConvert=convert;
+        sConvert = convert;
+    }
+
+    public static <T> GetRequest<T> get(String url) {
+        return new GetRequest<>(sBaseUrl + url);
+    }
+
+    public static <T> PostRequest<T> post(String url) {
+        return new PostRequest<>(sBaseUrl + url);
     }
 }
