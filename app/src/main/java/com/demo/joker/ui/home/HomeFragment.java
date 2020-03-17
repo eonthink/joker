@@ -8,16 +8,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.demo.joker.R;
+import com.demo.joker.model.Feed;
+import com.demo.joker.ui.AbsListFragment;
 import com.demo.libnavannotation.FragmentDestination;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 @FragmentDestination(pageUrl = "main/tabs/home",asStarter=true)
-public class HomeFragment extends Fragment {
+public class HomeFragment extends AbsListFragment<Feed> {
 
     private HomeViewModel homeViewModel;
 
@@ -35,5 +39,20 @@ public class HomeFragment extends Fragment {
         });
         Log.e("HomeFragment"," onCreateView");
         return root;
+    }
+
+    @Override
+    public PagedListAdapter<Feed, RecyclerView.ViewHolder> getAdapter() {
+        return null;
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
     }
 }

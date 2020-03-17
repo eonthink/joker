@@ -2,6 +2,8 @@ package com.demo.joker.model;
 
 import java.io.Serializable;
 
+import androidx.annotation.Nullable;
+
 
 public class Comment  implements Serializable {
     public static final int COMMENT_TYPE_VIDEO = 3;
@@ -42,5 +44,15 @@ public class Comment  implements Serializable {
     public User author;
     public Ugc ugc;
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || !(obj instanceof Comment))
+            return false;
 
+        Comment newComment = (Comment) obj;
+        return likeCount == newComment.likeCount
+                && hasLiked == newComment.hasLiked
+                && (author != null && author.equals(newComment.author))
+                && (ugc != null && ugc.equals(newComment.ugc));
+    }
 }
