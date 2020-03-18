@@ -15,19 +15,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@color/color_gray"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/dp_10"
         android:paddingRight="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_16"
-        android:layout_marginRight="@dimen/dp_16"
-        android:background="@color/color_gray2">
+        android:visibility="@{comment==null?View.GONE:View.VISIBLE}">
+
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_60"
             android:layout_gravity="right|top"
             android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/icon_god_comment2" />
+            android:src="@drawable/icon_god_comment2"></ImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,31 +38,33 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_10"
                 android:orientation="horizontal">
+
 
                 <com.demo.joker.view.JImageView
                     android:id="@+id/avatar"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
                     app:image_url="@{comment.author.avatar}"
                     app:isCircle="@{true}"
-                    android:layout_width="@dimen/dp_20"
-                    tools:src="@mipmap/ic_launcher_round"
-                    android:layout_height="@dimen/dp_20">
+                    tools:src="@mipmap/ic_launcher_round">
 
                 </com.demo.joker.view.JImageView>
 
                 <TextView
                     android:id="@+id/user_name"
-                    android:text="@{comment.author.name}"
-                    tools:text="mingchen"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:textColor="@color/color_3d3"
-                    android:textSize="@dimen/sp_12"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_20"
-                    android:layout_gravity="center_vertical"></TextView>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:gravity="center_vertical"
+                    android:text="@{comment.author.name}"
+                    android:textColor="@color/color_3d3"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="神秘的jetpack"></TextView>
 
                 <Space
                     android:layout_width="0dp"
@@ -67,57 +72,61 @@
                     android:layout_weight="1"></Space>
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:text="@{comment.ugc.likeCount>0?StringConvert.convertFeedUgc(comment.ugc.likeCount):null}"
-                    tools:text="1000"
                     android:textColor="@{comment.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
                     android:textSize="@dimen/sp_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
+                    tools:text="1000"></TextView>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
+                    android:layout_marginLeft="2dp"
                     android:src="@{comment.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
-                    tools:src="@drawable/icon_cell_liked"
-                    android:layout_marginLeft="@dimen/dp_4" />
+                    tools:src="@drawable/icon_cell_liked">
+
+                </ImageView>
             </LinearLayout>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
-                tools:text="mingchen............."
                 android:layout_marginRight="@dimen/dp_36"
-                android:textColor="@color/color_3d3"
-                android:textSize="@dimen/sp_14"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{comment.commentText}"
+                android:textColor="@color/color_3d3"
+                android:textSize="@dimen/sp_14"
                 android:visibility="@{TextUtils.isEmpty(comment.commentText)?View.GONE:View.VISIBLE}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></TextView>
+                tools:text="神秘的JetPack神秘的JetPack神秘的JetPack"></TextView>
 
             <FrameLayout
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="80dp"
-                android:layout_height="80dp">
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:visibility="@{TextUtils.isEmpty(comment.imageUrl)?View.GONE:View.VISIBLE}">
 
                 <com.demo.joker.view.JImageView
-                    tools:src="@mipmap/ic_launcher"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:background="@color/color_theme_10"
+                    android:visibility="@{TextUtils.isEmpty(comment.imageUrl)?View.GONE:View.VISIBLE}"
                     app:image_url="@{comment.imageUrl}"
                     app:isCircle="@{false}"
-                    android:background="@color/color_theme_10"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    tools:src="@mipmap/ic_launcher"></com.demo.joker.view.JImageView>
 
                 <ImageView
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_video_play"
-                    android:visibility="@{comment.commentType==2?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{TextUtils.isEmpty(comment.videoUrl)?View.GONE:View.VISIBLE}"></ImageView>
             </FrameLayout>
-        </LinearLayout>
 
+        </LinearLayout>
     </FrameLayout>
 </layout>

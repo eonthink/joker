@@ -1,10 +1,9 @@
 package com.demo.joker.ui.home;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.TypeReference;
 import com.demo.joker.model.Feed;
 import com.demo.joker.ui.AbsViewModel;
+import com.demo.joker.ui.MutablePageKeyedDataSource;
 import com.demo.libnetwork.ApiResponse;
 import com.demo.libnetwork.ApiService;
 import com.demo.libnetwork.JsonCallback;
@@ -13,14 +12,20 @@ import com.demo.libnetwork.Request;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.executor.ArchTaskExecutor;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
 
 public class HomeViewModel extends AbsViewModel<Feed> {
     private volatile boolean withCache = true;
-
+    private MutableLiveData<PagedList<Feed>> cacheLiveData = new MutableLiveData<>();
+    private AtomicBoolean loadAfter=new AtomicBoolean(false);
     @Override
     public DataSource createDataSource() {
         return mDataSource;
@@ -51,8 +56,10 @@ public class HomeViewModel extends AbsViewModel<Feed> {
     };
 
     private void loadData(int key, ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        if(key>0){
+            loadAfter.set(true);
+        }
 
-        Log.e("TAG111111",Thread.currentThread().getName());
         Request request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType","all")
                 .addParam("userId", 0)
@@ -65,7 +72,11 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             request.execute(new JsonCallback<List<Feed>>() {
                 @Override
                 public void onCacheSuccess(ApiResponse<List<Feed>> response) {
-
+                    List<Feed> body = response.body;
+                    MutablePageKeyedDataSource<Feed> dataSource = new MutablePageKeyedDataSource<>();
+                    dataSource.data.addAll(response.body);
+                    PagedList<Feed> pageList = dataSource.buildNewPagedList(config);
+                    cacheLiveData.postValue(pageList);
                 }
             });
         }
@@ -77,11 +88,30 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             callback.onResult(data);
             if (key > 0) {
                 getBoundaryPageData().postValue(data.size() > 0);
+                loadAfter.set(false);
             }
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public LiveData<PagedList<Feed>> getCacheLiveData() {
+        return cacheLiveData;
+    }
+
+    public void loadAfter(int id, ItemKeyedDataSource.LoadCallback<Feed> callback) {
+
+        if(loadAfter.get()){
+            callback.onResult(Collections.emptyList());
+            return;
+        }
+        ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                loadData(id,callback);
+            }
+        });
     }
 }

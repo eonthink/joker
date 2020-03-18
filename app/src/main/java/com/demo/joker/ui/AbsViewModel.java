@@ -9,13 +9,14 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 public abstract class AbsViewModel<T> extends ViewModel {
+    protected final PagedList.Config config;
     private DataSource dataSource;
     LiveData<PagedList<T>> pageData;
 
     private MutableLiveData<Boolean> boundaryPageData=new MutableLiveData<>();
 
     public AbsViewModel() {
-        PagedList.Config config = new PagedList.Config.Builder()
+        config = new PagedList.Config.Builder()
                 .setPageSize(10)
                 .setInitialLoadSizeHint(12)
                 .build();
