@@ -12,7 +12,7 @@ import com.demo.libnavannotation.FragmentDestination;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-@FragmentDestination(pageUrl = "main/tabs/my")
+@FragmentDestination(pageUrl = "main/tabs/my" ,needLogin=true)
 public class MyFragment extends Fragment {
 
 
